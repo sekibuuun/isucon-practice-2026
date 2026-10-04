@@ -1,0 +1,4 @@
+interface:
+  display_name: "ISUCON 改善ループ"
+  short_description: "ISUCONの有効スコア改善を計測と記録で検証する改善ループスキル"
+  default_prompt: "$isucon-workflow を使い、競技ルールとブランチ別記録を確認して依頼範囲の作業を進めてください。"
