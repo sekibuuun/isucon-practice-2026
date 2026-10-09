@@ -1,4 +1,4 @@
 interface:
-  display_name: "ISUCON インフラ・CI"
-  short_description: "ISUCONの有効スコア改善を計測と記録で検証するインフラ・CIスキル"
+  display_name: "ISUCON インフラ・実行制御"
+  short_description: "ISUCONの環境設定・反映・再起動・ベンチを安全に制御するスキル"
   default_prompt: "$isucon-infra-ci を使い、競技ルールとブランチ別記録を確認して依頼範囲の作業を進めてください。"

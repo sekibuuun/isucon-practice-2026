@@ -1,4 +1,4 @@
-# サーバー設定・Terraform
+# サーバー設定・構成管理
 
 
 ## nginx・Linux
@@ -7,12 +7,14 @@ nginxの圧縮、buffering、upstream keepalive、worker・接続数は観測か
 
 静的配信は内容・Content-Type・URI・認可を維持する。画像の正本と再生成可能なファイルcacheを分ける。欠損時のアプリfallback、更新・initialize、複数台・再起動での保持を確認する。CDNは一般的な手法だが競技の許可外資源へ処理を委譲しない。
 
-FD、接続キュー、ポート、I/O、CPU steal等を測る。sysctlを闇雲に増やさない。変更は設定ファイル・systemd等に残し、CI反映と再起動後の読み込みを確認する。systemd起動依存と再試行、必要なmount・権限・環境変数を確認する。nginx -t等の対象環境検証もCIで実行する。
+FD、接続キュー、ポート、I/O、CPU steal等を測る。sysctlを闇雲に増やさない。変更は設定ファイル・systemd等に残し、確認済みの操作経路による反映と再起動後の読み込みを確認する。systemd起動依存と再試行、必要なmount・権限・環境変数を確認する。nginx -t等の検証は実際の対象環境でも行う。
 
-## AWS・Terraform
+## 実行環境・構成管理
 
-既存のprovider版、state/backend、workspace、region、AMI、許可されたinstance種別・台数・networkを調べる。競技開始後に指定されるAMI等を事前に決めない。変更はTerraformへ記述し、fmt -check、validate、planを使い分ける。
+対象環境を識別する名前・ID・アドレス、ホストまたは基盤、CPU・メモリ・ディスク、台数、ネットワーク、永続領域、時刻、共有ディレクトリ等を調べる。環境の種類や構築方法を推測せず、既存の構成ファイル・イメージ・管理ツール・provision手順を確認する。
 
-applyはCI経由。planの差分を確認し、対象・許可条件・置換/削除・ディスク・データ保持への影響をレビューする。レビューした保存planとapplyを対応付け、state lockingを利用する。state・planには秘密が含まれ得るため非公開で扱い、Gitへ登録しない。AWS認証は既存方式を使い、コードや記録へ資格情報を貼らない。
+既存の構成管理がある場合はそのコードへ変更を記述し、対応する静的検証・差分確認・dry-runを行う。対象の置換・削除、ディスク・データ保持への影響をレビューし、秘密や状態ファイルをGitへ登録しない。認証は既存方式を使い、コードや記録へ資格情報を貼らない。
 
-user_dataは既存instanceの再起動ごとに設定を再適用する保証ではない。初回構築と継続的設定反映を区別し、既存CIの反映手順に接続する。TerraformでAWSを管理しても、nginxやsystemdの実体が反映されたことは別途確認する。
+初回構築、通常のコード反映、再起動、初期化を区別する。起動用イメージ、cloud-init、provision、コンテナイメージ等は既存環境へ変更を再適用する保証がないため、対象環境の実体へnginxやsystemd等が反映されたことを別途確認する。
+
+Terraformが既存方式ならprovider版、state/backend、workspace、対象、許可された資源・networkを調べ、fmt -check、validate、planを使い分ける。レビューしたplanとapplyを対応付けてstate lockingを利用し、既存の操作経路でapplyする。Terraformや特定クラウドを未導入の環境へ新たな前提として持ち込まない。

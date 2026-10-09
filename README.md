@@ -19,32 +19,34 @@ ISUCON2026への出場に向けて、環境構築やパフォーマンスチュ�
 このリポジトリの [`.agents/skills`](.agents/skills/) をGit管理します。Codexでリポジトリを開き、次のように呼び出します。自動選択も有効です。
 
 ```text
-$isucon-workflow を使い、AWSの練習環境を計測してGo実装を改善してください。
-$isucon-measure を使い、既存のCI成果物からボトルネックを分析してください。
+$isucon-workflow を使い、練習環境の構成と操作方法を確認してGo実装を改善してください。
+$isucon-measure を使い、対象環境の計測成果物からボトルネックを分析してください。
 $isucon-db を使い、計測されたN+1を改善してください。
 ```
 
 | スキル | 用途 |
 |---|---|
 | [isucon-workflow](.agents/skills/isucon-workflow/SKILL.md) | 改善ループ、記録、セルフレビュー |
-| [isucon-measure](.agents/skills/isucon-measure/SKILL.md) | AWS計測・ログ・pprof分析 |
+| [isucon-measure](.agents/skills/isucon-measure/SKILL.md) | 対象環境の計測・ログ・pprof分析 |
 | [isucon-go](.agents/skills/isucon-go/SKILL.md) | Goのホットパス改善 |
 | [isucon-db](.agents/skills/isucon-db/SKILL.md) | SQL・索引・接続管理 |
 | [isucon-cache](.agents/skills/isucon-cache/SKILL.md) | キャッシュ整合性・生成負荷 |
-| [isucon-infra-ci](.agents/skills/isucon-infra-ci/SKILL.md) | コード管理・Terraform・CI反映 |
+| [isucon-infra-ci](.agents/skills/isucon-infra-ci/SKILL.md) | サーバー設定・構成管理・実行制御 |
 
-ループは「計測→設計→実装→検証→セルフレビュー→修正→CI反映→AWSベンチ→採否判断」です。mustは有効スコアの成立を妨げる問題として修正し、性能候補はスコア向上の根拠と実測で採否を決めます。
+ループは「対象環境と操作経路の確認→計測→設計→実装→検証→セルフレビュー→反映→ベンチ→採否判断」です。mustは有効スコアの成立を妨げる問題として修正し、性能候補はスコア向上の根拠と実測で採否を決めます。
 
-アプリ・SQL・サーバー設定はコード、AWSリソースはTerraformで管理します。反映・再起動・ベンチ起動はGitHub Actionsで制御します。練習のサービスと負荷生成は分離したAWS環境、本番は競技サーバーと公式ベンチマーカーを使います。ローカルとCI runnerは編集・検証・制御用です。
+アプリ・SQL・サーバー設定はコードで管理します。接続・反映・初期化・再起動・ベンチ・成果物回収には、リポジトリやユーザーが示した既存の操作経路を使います。ローカルコマンド、SSH、環境管理ツール、CIなど方式は限定せず、存在しないコマンドやAPIを推測しません。
 
-既存CIがない場合、スキルは勝手にAWSやworkflowを構築しません。このブランチはスキルと資料の作成であり、実際のCI・Terraform環境はまだありません。
+性能評価では、サービス・DB・負荷生成の配置、割当資源、環境識別子、対象SHA、負荷条件を記録します。負荷生成がサービスと同居する練習環境も扱えますが、資源競合を含む同じ条件で比較し、公式スコアとは区別します。本番は競技サーバーと公式ベンチマーカーの正式手順を使います。
+
+操作経路がない場合、スキルは勝手に実行環境や自動化を構築しません。TerraformやGitHub Actionsは既存構成にある場合だけ利用します。このブランチはスキルと資料の作成であり、実際の実行環境や自動化は含みません。
 
 ### 記録と再開
 
-`docs/isucon/<ブランチ名>/` に `spec.md`（設計）、`run.md`（実装・CI・計測）、`review.md`（指摘・修正・実測判断）を残します。ブランチの `/` は階層として保持します。現在の [作成記録](docs/isucon/docs/codex-isucon-skills/spec.md) が例です。再開時は記録とGit・CIの実状態を照合します。
+`docs/isucon/<ブランチ名>/` に `spec.md`（設計）、`run.md`（実装・反映・計測）、`review.md`（指摘・修正・実測判断）を残します。ブランチの `/` は階層として保持します。現在の [作成記録](docs/isucon/docs/codex-isucon-skills/spec.md) が例です。再開時は記録とGit・対象環境・進行中処理の実状態を照合します。
 
 ### 競技中の運用と参考サイト
 
-[ISUCON2026レギュレーション](https://isucon.net/archives/59966826.html) と当日マニュアルを必ず確認し、当日マニュアルを優先します。競技終了までリポジトリ、記録、CIログ・成果物は非公開・チーム限定で運用してください。公開範囲の設定をこの変更で変更したわけではありません。
+[ISUCON2026レギュレーション](https://isucon.net/archives/59966826.html) と当日マニュアルを必ず確認し、当日マニュアルを優先します。競技終了までリポジトリ、記録、ログ・計測成果物は非公開・チーム限定で運用してください。公開範囲の設定をこの変更で変更したわけではありません。
 
 用途を付けた [参考サイト](.agents/skills/isucon-workflow/references/sources.md) を収録しています。スキル本文は実行手順と判断基準に絞っています。

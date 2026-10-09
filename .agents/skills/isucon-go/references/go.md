@@ -17,4 +17,4 @@ MaxIdleConnsPerHostはidle接続の保持上限であり、全接続数の上限
 
 goroutine追加が改善とは限らない。DB容量、キュー、ロック待ちを確認する。共有mapは同期し、I/Oを長い全体ロック内へ置かない。goroutineの終了・context伝播・エラー回収を確認する。
 
-raceは並行性の検証、pprofは性能の根拠として用途を分ける。GOMAXPROCSやGC設定は対象CPU割当・メモリ・実測から選び、手元のmacOSの値をAWSへ外挿しない。
+raceは並行性の検証、pprofは性能の根拠として用途を分ける。GOMAXPROCSやGC設定は対象CPU割当・メモリ・実測から選び、異なる環境の値を対象環境へ外挿しない。
