@@ -1,0 +1,4 @@
+interface:
+  display_name: "ISUCON DB改善"
+  short_description: "ISUCONの有効スコア改善を計測と記録で検証するDB改善スキル"
+  default_prompt: "$isucon-db を使い、競技ルールとブランチ別記録を確認して依頼範囲の作業を進めてください。"

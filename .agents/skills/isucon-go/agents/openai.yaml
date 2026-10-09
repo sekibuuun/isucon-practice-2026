@@ -1,0 +1,4 @@
+interface:
+  display_name: "ISUCON Go改善"
+  short_description: "ISUCONの有効スコア改善を計測と記録で検証するGo改善スキル"
+  default_prompt: "$isucon-go を使い、競技ルールとブランチ別記録を確認して依頼範囲の作業を進めてください。"
