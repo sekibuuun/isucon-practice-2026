@@ -1,4 +1,4 @@
 interface:
   display_name: "ISUCON 計測"
-  short_description: "ISUCONの有効スコア改善を計測と記録で検証する計測スキル"
+  short_description: "ISUCONの対象環境を計測し、ボトルネックを特定するスキル"
   default_prompt: "$isucon-measure を使い、競技ルールとブランチ別記録を確認して依頼範囲の作業を進めてください。"

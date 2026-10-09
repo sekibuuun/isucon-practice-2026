@@ -18,4 +18,4 @@
 | [GitHub手動実行](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow) | dispatchの前提とref・入力 |
 | [GitHub concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) | 環境単位の排他。pending置換・キャンセルにも注意 |
 | [gh run list](https://cli.github.com/manual/gh_run_list) / [view](https://cli.github.com/manual/gh_run_view) | run ID・SHA・状態の照合 |
-| [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) / [backend](https://developer.hashicorp.com/terraform/language/backend) | 差分レビューとstate。applyはCI、秘密はGitに登録しない |
+| [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) / [backend](https://developer.hashicorp.com/terraform/language/backend) | Terraformが既存方式の場合の差分レビューとstate。秘密はGitに登録しない |
