@@ -26,14 +26,14 @@ $isucon-db を使い、計測されたN+1を改善してください。
 
 | スキル | 用途 |
 |---|---|
-| [isucon-workflow](.agents/skills/isucon-workflow/SKILL.md) | 改善ループ、記録、セルフレビュー |
+| [isucon-workflow](.agents/skills/isucon-workflow/SKILL.md) | 一つのボトルネックの改善、記録、人間の採否判断 |
 | [isucon-measure](.agents/skills/isucon-measure/SKILL.md) | 対象環境の計測・ログ・pprof分析 |
 | [isucon-go](.agents/skills/isucon-go/SKILL.md) | Goのホットパス改善 |
 | [isucon-db](.agents/skills/isucon-db/SKILL.md) | SQL・索引・接続管理 |
 | [isucon-cache](.agents/skills/isucon-cache/SKILL.md) | キャッシュ整合性・生成負荷 |
 | [isucon-infra-ci](.agents/skills/isucon-infra-ci/SKILL.md) | サーバー設定・構成管理・実行制御 |
 
-ループは「対象環境と操作経路の確認→計測→設計→実装→検証→セルフレビュー→反映→ベンチ→採否判断」です。mustは有効スコアの成立を妨げる問題として修正し、性能候補はスコア向上の根拠と実測で採否を決めます。
+一回のワークフローで一つのボトルネックを扱います。候補は複数検討できますが、一度に修正するのは一候補だけです。「対象環境の確認→基準計測→候補選定→実装・検証・セルフレビュー→計測用反映→ベンチ→修正前後のスコア提示→人間の判断」と進みます。採用後は終了し、却下後は候補だけを取り消して同じボトルネックの候補選定へ戻ります。mustは有効スコアの成立を妨げる問題として修正・保持します。
 
 アプリ・SQL・サーバー設定はコードで管理します。接続・反映・初期化・再起動・ベンチ・成果物回収には、リポジトリやユーザーが示した既存の操作経路を使います。ローカルコマンド、SSH、環境管理ツール、CIなど方式は限定せず、存在しないコマンドやAPIを推測しません。
 
@@ -44,6 +44,8 @@ $isucon-db を使い、計測されたN+1を改善してください。
 ### 記録と再開
 
 `docs/isucon/<ブランチ名>/` に `spec.md`（設計）、`run.md`（実装・反映・計測）、`review.md`（指摘・修正・実測判断）を残します。ブランチの `/` は階層として保持します。現在の [作成記録](docs/isucon/docs/codex-isucon-skills/spec.md) が例です。再開時は記録とGit・対象環境・進行中処理の実状態を照合します。
+
+共通資料は同じ作業中に読み直さず、専門資料は必要な箇所だけ参照します。大量のログは集計と原本参照で扱い、計測・検証・ベンチなど必要なコマンドの実行は省きません。
 
 ### 競技中の運用と参考サイト
 

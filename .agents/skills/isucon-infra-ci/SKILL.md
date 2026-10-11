@@ -5,7 +5,7 @@ description: ISUCONのnginx・Linux・実行環境の設定をコード管理し
 
 # インフラ・実行制御
 
-最初に [ルール](../isucon-workflow/references/regulations.md) と [共通ループ](../isucon-workflow/references/loop.md) を読む。操作前に [実行制御](references/ci.md)、サーバー変更時に [サーバー・構成管理](references/server.md) を読む。
+単独利用では [ルール](../isucon-workflow/references/regulations.md) と [共通ループ](../isucon-workflow/references/loop.md) を読む。workflowから利用中なら再読込しない。操作前に [実行制御](references/ci.md)、サーバー変更時に [サーバー・構成管理](references/server.md) を読む。
 
 - サービス・DB・負荷生成の配置、割当資源、環境識別子、認証、接続・反映・初期化・再起動・ベンチ・成果物回収方法を調べる。構築が依頼されていなければ不足を報告し、勝手に実行環境や自動化を作らない。
 - アプリ・SQL・nginx・systemd・Linux設定をコード化する。構築・設定管理の既存コードがあればそれに従う。SSH、管理ツール、CI等は許可された操作経路として使えるが、対象環境の状態だけを書き換えて最終状態にしない。
