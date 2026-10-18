@@ -12,11 +12,11 @@
 | I/O・帯域が限界 | iostat等、転送量、画像・静的配信経路 |
 | 対象に余裕があるのに件数が伸びない | 練習用負荷生成側のCPU・帯域・並列度 |
 
-対象環境の収集手順で使用可能なtop、vmstat、pidstat、iostat、ss等を確認し、対象・時間窓を揃える。load averageだけでCPU不足とは断定しない。CPUのuser/system/iowait/stealを分ける。累積counterは同じ期間の差分・rateで比較する。
+対象環境の収集手順で使用可能なtop、vmstat、pidstat、iostat、ss等を確認し、対象・時間窓を揃える。負荷生成とサービスが同居する場合はプロセス別CPU・メモリを分けて残す。load averageやVM全体の平均CPUだけでサービスのCPU不足とは断定しない。CPUのuser/system/iowait/stealを分ける。累積counterは同じ期間の差分・rateで比較する。
 
 ## アクセスログ・SQL
 
-nginxログにrequest time、upstream response time、status、method、URI、送信量を記録できるか調べる。設定変更はコード化し、確認済みの操作経路で反映する。既存形式とalpバージョンのhelpを確認して集計する。
+基準ベンチ前にnginxログへrequest time、upstream response time、status、method、URI、送信量を記録できるか調べる。応答時間がないログの件数だけではAPIが処理件数を制限したと判断しない。設定変更はコード化し、確認済みの操作経路で反映する。既存形式とalpバージョンのhelpを確認して集計する。
 
 LTSV形式とラベルが合う場合の解析例：
 
@@ -25,7 +25,7 @@ alp ltsv --file access.ltsv --sort sum -r
 pt-query-digest mysql-slow.log
 ```
 
-解析は取得済み成果物を別環境で読んでもよい。収集・負荷生成の実行場所と区別する。過去ベンチのログを混ぜず、ローテーション・時間窓を操作手順で管理する。slow log閾値0等の診断負荷を記録し、最終比較で設定を揃える。
+解析は取得済み成果物を別環境で読んでもよい。収集・負荷生成の実行場所と区別する。アクセスログ、slow logまたはperformance_schema集計、DBStats、OS指標、ベンチ結果のうち判断に使う原本を試行IDと時間窓で保存する。取得できない項目と判断への影響をrunに記録する。過去ベンチのログを混ぜず、分離・保存は [実行制御](../../isucon-infra-ci/references/ci.md) に従う。slow log閾値0等の診断負荷を記録し、最終比較で設定を揃える。
 
 ## Goプロファイル
 
