@@ -1,4 +1,4 @@
 interface:
   display_name: "ISUCON 全体調査"
-  short_description: "ISUCONの全体を横断計測し、原因付きの改善候補を優先度順に整理する"
-  default_prompt: "$isucon-survey を使い、対象環境を全体調査してボトルネック候補を優先度順に提示してください。"
+  short_description: "ISUCONの全体を横断計測し、API別の一覧を合計応答時間順に整理する"
+  default_prompt: "$isucon-survey を使い、対象環境を全体調査してAPI別のボトルネック一覧を合計応答時間順に提示してください。"
