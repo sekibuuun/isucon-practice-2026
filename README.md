@@ -19,15 +19,15 @@ ISUCON2026への出場に向けて、環境構築やパフォーマンスチュ�
 このリポジトリの [`.agents/skills`](.agents/skills/) をGit管理します。Codexでリポジトリを開き、次のように呼び出します。自動選択も有効です。
 
 ```text
-$isucon-survey を使い、練習環境を全体調査して候補一覧を優先度順に作成してください。
-$isucon-workflow を使い、調査ID 20261024-isuride のB01を改善してください。
+$isucon-survey を使い、練習環境を全体調査してAPI別の一覧を合計応答時間順に作成してください。
+$isucon-workflow を使い、調査ID 20261024-isuride の GET /api/items を改善してください。
 $isucon-measure を使い、対象環境の計測成果物からボトルネックを分析してください。
 $isucon-db を使い、計測されたN+1を改善してください。
 ```
 
 | スキル | 用途 |
 |---|---|
-| [isucon-survey](.agents/skills/isucon-survey/SKILL.md) | 初期・全体再調査、原因付き候補一覧の作成と順位付け |
+| [isucon-survey](.agents/skills/isucon-survey/SKILL.md) | 初期・全体再調査、API別一覧の作成と合計応答時間順の順位付け |
 | [isucon-workflow](.agents/skills/isucon-workflow/SKILL.md) | 一つのボトルネックの改善、記録、人間の採否判断 |
 | [isucon-measure](.agents/skills/isucon-measure/SKILL.md) | 対象環境の計測・ログ・pprof分析 |
 | [isucon-go](.agents/skills/isucon-go/SKILL.md) | Goのホットパス改善 |
@@ -35,7 +35,7 @@ $isucon-db を使い、計測されたN+1を改善してください。
 | [isucon-cache](.agents/skills/isucon-cache/SKILL.md) | キャッシュ整合性・生成負荷 |
 | [isucon-infra-ci](.agents/skills/isucon-infra-ci/SKILL.md) | サーバー設定・構成管理・実行制御 |
 
-surveyで全体を調査し、「順位・ID・対象・原因」の一覧を作成します。ユーザーが基本的に上から一件を選び、workflowが詳細調査・改善を担当します。対象未指定なら自動選定しません。
+surveyで全体を調査し、「順位・API・回数・合計応答時間・平均応答時間」の一覧を作成します。一覧は合計応答時間の降順で、原因・根拠は調査記録に残します。ユーザーがAPIを一件選び、workflowが詳細調査・改善を担当します。対象未指定なら自動選定しません。
 
 一回のワークフローで、試行ごとのログ原本から制限要因を確認して一つのボトルネックを扱います。根拠が足りなければ追加計測します。候補は複数検討できますが、一度に修正するのは一候補だけです。「指定された候補と対象環境の確認→原因検証・基準計測とログ保存→改善候補選定→実装・検証・セルフレビュー→計測用反映→ベンチとログ保存→修正前後の結果提示→人間の判断」と進みます。採用後は終了し、却下後は候補だけを取り消して同じボトルネックの候補選定へ戻ります。mustは有効スコアの成立を妨げる問題として修正・保持します。
 
@@ -47,7 +47,7 @@ surveyで全体を調査し、「順位・ID・対象・原因」の一覧を作
 
 ### 記録と再開
 
-surveyの一覧・調査記録・履歴は `docs/isucon/surveys/<調査ID>/` に保存します。調査IDは初回の日付と対象名を基本にし、再調査でも維持します。workflowは採否判断・正式反映または復旧後に一覧を更新し、解消項目は履歴へ移します。残りの原因・順位は計測で裏付けられる範囲で更新します。次の対象への着手や全体再調査はユーザーの指示で行います。
+surveyの一覧・調査記録・履歴は `docs/isucon/surveys/<調査ID>/` に保存します。調査IDは初回の日付と対象名を基本にし、再調査でも維持します。workflowは採否判断・正式反映または復旧後に一覧を更新し、解消項目は履歴へ移します。残りのAPIの数値・順位は同一試行の全体HTTP集計が揃う場合に更新し、不足時は一覧を維持して理由を記録します。原因は調査記録で更新します。次の対象への着手や全体再調査はユーザーの指示で行います。
 
 `docs/isucon/<ブランチ名>/` に `spec.md`（設計）、`run.md`（実装・反映・計測）、`review.md`（指摘・修正・実測判断）を残します。ブランチの `/` は階層として保持します。現在の [作成記録](docs/isucon/docs/codex-isucon-skills/spec.md) が例です。再開時は記録とGit・対象環境・進行中処理の実状態を照合します。
 
